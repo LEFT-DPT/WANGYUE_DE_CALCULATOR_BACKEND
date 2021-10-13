@@ -1,5 +1,6 @@
 package com.leftdpt.wyc.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,10 @@ public class TestCasController {
     private HttpServletRequest request;
     @Resource
     private HttpServletResponse response;
+    @Value("${cas.server-url-prefix}")
+    private String casServer;
+    @Value("${cas.client-host-url}")
+    private String clientHost;
     
     @GetMapping("/test")
     public String test(){
@@ -30,7 +35,7 @@ public class TestCasController {
     @GetMapping("/logout")
     public void logout() throws IOException {
         request.getSession().invalidate();
-        response.sendRedirect("http://127.0.0.1:8888/cas/logout?service=http://127.0.0.1:8000");
+        response.sendRedirect(casServer+"/logout?service="+clientHost);
     }
     
 }
